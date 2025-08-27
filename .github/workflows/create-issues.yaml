@@ -1,0 +1,31 @@
+# .github/workflows/create-issues.yml
+name: 🚀 Create 30 Roadmap Issues
+
+on:
+  workflow_dispatch:   # Run manually from GitHub Actions tab
+
+permissions:
+  issues: write
+  contents: read
+
+jobs:
+  create-issues:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        day: [01, 02, 03, 04, 05, 06, 07, 
+              08, 09, 10, 11, 12, 13, 14, 
+              15, 16, 17, 18, 19, 20, 21, 
+              22, 23, 24, 25, 26, 27, 28, 
+              29, 30]
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Create issue for Day ${{ matrix.day }}
+        uses: peter-evans/create-issue-from-file@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          title: "Day ${{ matrix.day }}"
+          content-filepath: ./issues/day-${{ matrix.day }}.md
+          labels: daily, roadmap
